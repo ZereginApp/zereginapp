@@ -1,0 +1,55 @@
+name: Funcionalidad
+description: Nueva funcionalidad o parte de un requisito funcional.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Usa esta plantilla para cualquier funcionalidad visible en la aplicación.
+        Recuerda asignar en el tablero el sprint, el área y la prioridad (MVP o mejora).
+
+  - type: input
+    id: requisito
+    attributes:
+      label: Requisito y caso de uso
+      description: Referencia en el documento del proyecto, si la hay.
+      placeholder: "RF05.2 · CU04"
+    validations:
+      required: false
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción
+      description: Qué hay que hacer y para qué. Puedes usar el formato "Como [rol], quiero [acción] para [objetivo]".
+      placeholder: "Como miembro, quiero ver por qué no puedo inscribirme en una tarea para saber qué requisito no cumplo."
+    validations:
+      required: true
+
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Criterios de aceptación
+      description: Condiciones concretas y comprobables que debe cumplir la funcionalidad para darla por terminada.
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: textarea
+    id: notas
+    attributes:
+      label: Notas técnicas
+      description: Endpoints, tablas, componentes o decisiones de diseño relevantes.
+    validations:
+      required: false
+
+  - type: input
+    id: dependencias
+    attributes:
+      label: Dependencias
+      description: Issues que deben estar terminadas antes que esta.
+      placeholder: "Depende de #12"
+    validations:
+      required: false

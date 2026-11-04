@@ -1,0 +1,78 @@
+name: Error
+description: Algo no funciona como debería.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción del error
+      description: Qué ocurre, en pocas palabras.
+    validations:
+      required: true
+
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducirlo
+      description: Lo necesario para que otra persona vea el mismo error.
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+
+  - type: textarea
+    id: obtenido
+    attributes:
+      label: Resultado obtenido
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: ¿Dónde ocurre?
+      options:
+        - Frontend
+        - Backend
+        - Base de datos
+        - Infraestructura
+        - No lo sé
+    validations:
+      required: true
+
+  - type: dropdown
+    id: entorno
+    attributes:
+      label: Entorno
+      options:
+        - Local
+        - Pruebas
+        - Producción
+    validations:
+      required: true
+
+  - type: textarea
+    id: registros
+    attributes:
+      label: Mensajes de error o registros
+      description: Copia aquí el error de la consola o los registros. Revisa que no incluyan contraseñas ni datos personales.
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: capturas
+    attributes:
+      label: Capturas
+      description: Si el error se ve en la interfaz, arrastra aquí una captura.
+    validations:
+      required: false

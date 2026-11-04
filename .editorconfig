@@ -1,0 +1,28 @@
+# Configuración común de formato para todos los editores del equipo
+# https://editorconfig.org
+root = true
+
+# Reglas generales
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Frontend (Angular): 2 espacios, la convención de Angular
+[frontend/**]
+indent_size = 2
+
+# YAML (docker-compose, workflows): 2 espacios
+[*.{yml,yaml}]
+indent_size = 2
+
+# JSON: 2 espacios
+[*.json]
+indent_size = 2
+
+# Markdown: los espacios al final de línea pueden ser saltos de línea intencionados
+[*.md]
+trim_trailing_whitespace = false

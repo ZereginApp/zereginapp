@@ -1,0 +1,2 @@
+# Obliga a usar una de las plantillas: no se pueden crear issues en blanco.
+blank_issues_enabled: false

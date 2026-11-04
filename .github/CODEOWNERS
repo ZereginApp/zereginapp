@@ -1,0 +1,26 @@
+# Responsables de revisión por carpeta.
+# GitHub aplica la ÚLTIMA regla que coincide, así que las generales van primero.
+# Organización: ZereginApp. Equipos: backend, frontend e infraestructura
+
+# Por defecto: cualquier equipo puede revisar
+*                        @ZereginApp/backend @ZereginApp/frontend @ZereginApp/infraestructura
+
+# Backend (Laravel)
+/backend/                @ZereginApp/backend
+
+# Frontend (Angular)
+/frontend/               @ZereginApp/frontend
+
+# Contrato de la API: lo comparten backend y frontend
+/docs/api/               @ZereginApp/backend @ZereginApp/frontend
+
+# Infraestructura: Docker, Traefik, despliegue e integración continua
+/docker/                 @ZereginApp/infraestructura
+/docker-compose.yml      @ZereginApp/infraestructura
+/docker-compose.prod.yml @ZereginApp/infraestructura
+/backend/Dockerfile      @ZereginApp/infraestructura @ZereginApp/backend
+/frontend/Dockerfile     @ZereginApp/infraestructura @ZereginApp/frontend
+/.github/workflows/      @ZereginApp/infraestructura
+
+# El propio CODEOWNERS: lo revisan todos
+/.github/CODEOWNERS     @ZereginApp/backend @ZereginApp/frontend @ZereginApp/infraestructura

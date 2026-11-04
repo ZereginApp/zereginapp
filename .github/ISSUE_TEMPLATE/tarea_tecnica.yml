@@ -1,0 +1,36 @@
+name: Tarea técnica
+description: Configuración, infraestructura, documentación o refactorización sin funcionalidad nueva visible.
+labels: ["tarea técnica"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Para tareas como configurar Docker, crear un workflow, generar un proyecto o documentar la API.
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción
+      description: Qué hay que hacer y por qué es necesario.
+    validations:
+      required: true
+
+  - type: textarea
+    id: terminado
+    attributes:
+      label: Criterios de terminado
+      description: Qué debe estar hecho o funcionando para cerrar la tarea.
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: input
+    id: dependencias
+    attributes:
+      label: Dependencias
+      description: Issues que deben estar terminadas antes que esta.
+      placeholder: "Depende de #3"
+    validations:
+      required: false

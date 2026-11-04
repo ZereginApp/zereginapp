@@ -1,0 +1,27 @@
+# Normaliza todos los archivos de texto con saltos de línea de Linux (LF),
+# para que los scripts funcionen dentro de los contenedores aunque se editen en Windows.
+* text=auto eol=lf
+
+# Scripts de Windows: mantienen saltos de línea de Windows (CRLF)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Archivos binarios: Git no debe modificarlos ni intentar mostrar diferencias
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.webp  binary
+*.pdf   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.docx  binary
+*.xlsx  binary
+
+# Mejores diferencias en local para el código de Laravel.
+# El orden importa: la última regla que coincide gana, así que las plantillas Blade van después.
+*.php       diff=php
+*.blade.php diff=html
