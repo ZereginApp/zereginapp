@@ -66,6 +66,24 @@ No hace falta instalar PHP, Node ni MySQL: todo se ejecuta en contenedores.
    ```bash
    docker compose up -d
    ```
+   
+4. Crea las tablas y carga los datos de prueba:
+
+   ```bash
+   docker compose exec backend php artisan migrate:fresh --seed
+   ```
+
+   La base de datos la crea el contenedor de MySQL con los valores de `.env`. Este comando crea las tablas y carga datos ficticios: una cuadrilla con las categorías blusa y neska, 2 administradores, 30 miembros y 20 tareas entre los actos previos y el 4-9 de agosto. ⚠️ Borra los datos que hubiera.
+
+### Credenciales de prueba
+
+Contraseña de todas las cuentas: `Demo2027!` (ficticia, solo para desarrollo).
+
+| Perfil | Email |
+|---|---|
+| Administrador 1 | `admin@cuadrilla.test` |
+| Administrador 2 | `admin2@cuadrilla.test` |
+| Miembros (30) | `miembro01@cuadrilla.test` … `miembro30@cuadrilla.test` |
 
 > Esta sección se completará a medida que se configuren los contenedores, el backend y el frontend.
 
