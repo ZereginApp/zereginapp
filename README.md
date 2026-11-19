@@ -73,7 +73,7 @@ No hace falta instalar PHP, Node ni MySQL: todo se ejecuta en contenedores.
    docker compose exec backend php artisan migrate:fresh --seed
    ```
 
-   La base de datos la crea el contenedor de MySQL con los valores de `.env`. Este comando crea las tablas y carga datos ficticios: una cuadrilla con las categorías blusa y neska, 2 administradores, 30 miembros y 20 tareas entre los actos previos y el 4-9 de agosto. ⚠️ Borra los datos que hubiera.
+      La base de datos la crea el contenedor de MySQL con los valores de `.env`. Este comando crea las tablas y carga datos ficticios: las categorías blusa y neska, 2 administradores, 30 miembros y 20 tareas entre los actos previos y el 4-9 de agosto. ⚠️ Borra los datos que hubiera.
 
 ### Credenciales de prueba
 

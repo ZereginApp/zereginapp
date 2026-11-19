@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Categoria;
-use App\Models\Cuadrilla;
+use App\Models\HistorialAccion;
 use App\Models\Inscripcion;
 use App\Models\Tarea;
 use App\Models\TipoTarea;
@@ -21,13 +21,8 @@ class CuadrillaDemoSeeder extends Seeder
      */
     public function run(): void
     {
-        $cuadrilla = Cuadrilla::firstOrCreate(
-            ['nombre' => 'Cuadrilla Demo La Blanca'],
-            ['descripcion' => 'Cuadrilla ficticia para desarrollo y demostración.']
-        );
-
-        $blusa = Categoria::firstOrCreate(['cuadrilla_id' => $cuadrilla->id, 'nombre' => 'Blusa']);
-        $neska = Categoria::firstOrCreate(['cuadrilla_id' => $cuadrilla->id, 'nombre' => 'Neska']);
+        $blusa = Categoria::firstOrCreate(['nombre' => 'Blusa']);
+        $neska = Categoria::firstOrCreate(['nombre' => 'Neska']);
 
         $tipos = [];
         foreach (['Logística', 'Txaranga', 'Reparto', 'Acto benéfico', 'Comida'] as $nombre) {
@@ -39,13 +34,11 @@ class CuadrillaDemoSeeder extends Seeder
         $administradores[] = Usuario::updateOrCreate(
             ['email' => 'admin@cuadrilla.test'],
             [
-                'cuadrilla_id' => $cuadrilla->id,
                 'categoria_id' => $blusa->id,
                 'nombre' => 'Marta',
-                'apellidos' => 'Administración',
+                'apellidos' => 'Gómez',
                 'password' => $passwordDemo,
                 'rol' => 'admin',
-                'estado' => 'activo',
                 'anio_ingreso' => 2012,
                 'fecha_baja' => null
             ]
@@ -53,13 +46,11 @@ class CuadrillaDemoSeeder extends Seeder
         $administradores[] = Usuario::updateOrCreate(
             ['email' => 'admin2@cuadrilla.test'],
             [
-                'cuadrilla_id' => $cuadrilla->id,
                 'categoria_id' => $neska->id,
                 'nombre' => 'Aitor',
-                'apellidos' => 'Coordinación',
+                'apellidos' => 'González',
                 'password' => $passwordDemo,
                 'rol' => 'admin',
-                'estado' => 'activo',
                 'anio_ingreso' => 2009,
                 'fecha_baja' => null
             ]
@@ -105,13 +96,11 @@ class CuadrillaDemoSeeder extends Seeder
             $miembros[] = Usuario::updateOrCreate(
                 ['email' => $email],
                 [
-                    'cuadrilla_id' => $cuadrilla->id,
                     'categoria_id' => $categoria->id,
                     'nombre' => $nombre,
                     'apellidos' => $apellidos,
                     'password' => $passwordDemo,
                     'rol' => 'miembro',
-                    'estado' => 'activo',
                     'anio_ingreso' => $anio,
                     'fecha_baja' => null
                 ]
@@ -152,7 +141,7 @@ class CuadrillaDemoSeeder extends Seeder
             }
 
             $tarea = Tarea::updateOrCreate(
-                ['cuadrilla_id' => $cuadrilla->id, 'titulo' => $titulo],
+                ['titulo' => $titulo],
                 [
                     'tipo_tarea_id' => $tipos[$tipo]->id,
                     'creador_id' => $administradores[$indice % 2]->id,
@@ -180,16 +169,6 @@ class CuadrillaDemoSeeder extends Seeder
             $tareas[] = $tarea;
         }
 
-        // Eliminar una tarea del seeder antiguo que ya no forma parte del conjunto de 20.
-        // Solo se elimina este registro conocido de demostración y sus relaciones dependientes.
-        $tareaAntigua = Tarea::where('cuadrilla_id', $cuadrilla->id)
-            ->where('titulo', 'Apoyo al reparto de bebida')
-            ->first();
-        if ($tareaAntigua) {
-            $tareaAntigua->inscripciones()->delete();
-            $tareaAntigua->categoriasPermitidas()->detach();
-            $tareaAntigua->delete();
-        }
 
         // Vaciar solo las inscripciones de estas 20 tareas demo para que el seeder sea repetible.
         Inscripcion::whereIn('tarea_id', collect($tareas)->pluck('id'))->delete();
@@ -217,6 +196,8 @@ class CuadrillaDemoSeeder extends Seeder
         }
 
         // El resto de tareas recibe inscripciones de ejemplo coherentes con las categorías permitidas.
+        $inscritasPorAdmin = [];
+        $canceladas = [];
         foreach ($tareas as $indice => $tarea) {
             if ($indice === 12) {
                 continue;
@@ -227,14 +208,123 @@ class CuadrillaDemoSeeder extends Seeder
             $cantidad = min(3 + ($indice % 2), $candidatos->count(), $tarea->plazas_maximas - 1);
 
             foreach ($candidatos->take($cantidad) as $posicion => $miembro) {
+                $porAdmin = $posicion === 0 && $indice % 5 === 0;
                 Inscripcion::create([
                     'tarea_id' => $tarea->id,
                     'usuario_id' => $miembro->id,
                     'estado' => 'confirmada',
-                    'origen' => $posicion === 0 && $indice % 5 === 0 ? 'admin' : 'usuario',
-                    'creada_por_id' => $posicion === 0 && $indice % 5 === 0 ? $administradores[0]->id : null,
+                    'origen' => $porAdmin ? 'admin' : 'usuario',
+                    'creada_por_id' => $porAdmin ? $administradores[0]->id : null,
                 ]);
+                if ($porAdmin) {
+                    $inscritasPorAdmin[] = [$tarea, $miembro];
+                }
             }
+
+            // Algunas tareas tienen además una inscripción cancelada (no ocupa plaza).
+            if (in_array($indice, [3, 7, 15], true) && $candidatos->count() > $cantidad) {
+                $miembro = $candidatos[$cantidad];
+                Inscripcion::create([
+                    'tarea_id' => $tarea->id,
+                    'usuario_id' => $miembro->id,
+                    'estado' => 'cancelada',
+                    'origen' => 'usuario',
+                    'cancelada_at' => now()->subDays(2),
+                ]);
+                $canceladas[] = [$tarea, $miembro];
+            }
+        }
+
+        // Dos miembros dados de baja: no se borran, se guarda la fecha de baja.
+        $miembrosDeBaja = [$miembros[28], $miembros[29]];
+        foreach ($miembrosDeBaja as $posicion => $miembro) {
+            $miembro->update(['fecha_baja' => Carbon::parse('2026-10-10 10:00')->addDays($posicion * 7)]);
+        }
+
+        $this->crearHistorial($administradores, $tareas, $inscritasPorAdmin, $canceladas, $miembrosDeBaja);
+    }
+
+    /**
+     * Registros de ejemplo de historial_acciones con los distintos tipos de acción.
+     */
+    private function crearHistorial(array $administradores, array $tareas, array $inscritasPorAdmin, array $canceladas, array $miembrosDeBaja): void
+    {
+        // Vaciar solo el historial de los datos demo para que el seeder sea repetible.
+        $idsTareas = collect($tareas)->pluck('id');
+        $idsBajas = collect($miembrosDeBaja)->pluck('id');
+        HistorialAccion::whereIn('tarea_id', $idsTareas)
+            ->orWhereIn('tarea_destino_id', $idsTareas)
+            ->orWhereIn('usuario_afectado_id', $idsBajas)
+            ->delete();
+
+        // Crear una tarea: no afecta a ningún usuario (usuario_afectado_id NULL).
+        foreach ([$tareas[0], $tareas[12]] as $tarea) {
+            HistorialAccion::create([
+                'admin_id' => $tarea->creador_id,
+                'usuario_afectado_id' => null,
+                'tarea_id' => $tarea->id,
+                'tipo_accion' => 'crear_tarea',
+                'motivo' => 'Tarea creada y publicada para las fiestas.',
+                'created_at' => now()->subDays(30),
+            ]);
+        }
+
+        // Inscripciones hechas por un administrador.
+        foreach ($inscritasPorAdmin as [$tarea, $miembro]) {
+            HistorialAccion::create([
+                'admin_id' => $administradores[0]->id,
+                'usuario_afectado_id' => $miembro->id,
+                'tarea_id' => $tarea->id,
+                'tipo_accion' => 'anadir',
+                'motivo' => 'Inscrito por la junta a petición del miembro.',
+                'created_at' => now()->subDays(10),
+            ]);
+        }
+
+        // Cancelación hecha por un administrador.
+        [$tareaCancelada, $miembroCancelado] = $canceladas[0];
+        HistorialAccion::create([
+            'admin_id' => $administradores[1]->id,
+            'usuario_afectado_id' => $miembroCancelado->id,
+            'tarea_id' => $tareaCancelada->id,
+            'tipo_accion' => 'cancelar',
+            'motivo' => 'El miembro avisó de que no podía acudir.',
+            'created_at' => now()->subDays(2),
+        ]);
+
+        // Mover a un miembro de una tarea a otra: cancelada en el origen y confirmada en el destino.
+        [$tareaOrigen, $miembroMovido] = $canceladas[1];
+        $tareaDestino = $tareas[19];
+        $yaInscrito = Inscripcion::where('tarea_id', $tareaDestino->id)->where('usuario_id', $miembroMovido->id)->exists();
+        if (! $yaInscrito) {
+            Inscripcion::create([
+                'tarea_id' => $tareaDestino->id,
+                'usuario_id' => $miembroMovido->id,
+                'estado' => 'confirmada',
+                'origen' => 'admin',
+                'creada_por_id' => $administradores[0]->id,
+            ]);
+            HistorialAccion::create([
+                'admin_id' => $administradores[0]->id,
+                'usuario_afectado_id' => $miembroMovido->id,
+                'tarea_id' => $tareaOrigen->id,
+                'tarea_destino_id' => $tareaDestino->id,
+                'tipo_accion' => 'mover',
+                'motivo' => 'Faltaba gente en la limpieza del local.',
+                'created_at' => now()->subDays(2),
+            ]);
+        }
+
+        // Bajas de miembros.
+        foreach ($miembrosDeBaja as $miembro) {
+            HistorialAccion::create([
+                'admin_id' => $administradores[0]->id,
+                'usuario_afectado_id' => $miembro->id,
+                'tarea_id' => null,
+                'tipo_accion' => 'baja',
+                'motivo' => 'Baja comunicada en la asamblea.',
+                'created_at' => $miembro->fecha_baja,
+            ]);
         }
     }
 }

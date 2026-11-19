@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Cuadrilla;
 use App\Models\Tarea;
 use App\Models\TipoTarea;
 use App\Models\Usuario;
@@ -19,7 +18,6 @@ class TareaFactory extends Factory
         $fin = (clone $inicio)->modify('+2 hours');
 
         return [
-            'cuadrilla_id' => Cuadrilla::factory(),
             'tipo_tarea_id' => TipoTarea::factory(),
             'creador_id' => Usuario::factory(),
             'responsable_id' => null,
@@ -39,11 +37,10 @@ class TareaFactory extends Factory
         ];
     }
 
-    /** Asigna relaciones existentes de una misma cuadrilla. */
-    public function enCuadrilla(Cuadrilla $cuadrilla, TipoTarea $tipo, Usuario $creador): static
+    /** Asigna un tipo y un creador existentes. */
+    public function con(TipoTarea $tipo, Usuario $creador): static
     {
         return $this->state(fn() => [
-            'cuadrilla_id' => $cuadrilla->id,
             'tipo_tarea_id' => $tipo->id,
             'creador_id' => $creador->id,
         ]);
