@@ -1,0 +1,66 @@
+<header>
+
+    <!-- Logo y nombre de la aplicación -->
+    <app-brand></app-brand>
+
+    <!-- Botón de apertura del menú -->
+    <button type="button" (click)="alternarMenu()" [attr.aria-expanded]="menuAbierto" aria-label="Abrir menú" class="boton-grande-solo-icono boton-blanco-gris">
+        ☰
+    </button>
+
+    <!-- Menú lateral desplegable -->
+    <div *ngIf="menuAbierto" class="fixed inset-0 z-50 bg-black/40" (click)="cerrarMenu()">
+
+        <div class="absolute right-0 top-0 flex flex-col gap-4 w-80 md:w-85 h-full p-5 bg-stone-100 shadow-2xl" (click)="$event.stopPropagation()">
+
+            <!-- Cabecera del menú -->
+
+            <div class="flex items-center justify-between pb-4 border-b border-stone-300">
+
+                <span class="font-bold text-lg">Opciones</span> @if (modo === 'usuario') {
+
+                <!-- Avatar del usuario -->
+
+                <div class="shrink-0">
+                    <!--
+                    LÓGICA ANGULAR:
+                    Con in @If, comprobar si el usuario ha elegido un avatar de la lista.
+                        - Si existe: mostrar el avatar en como un background-image (bg-[url('...')]) y las iniciales estarán como hidden
+                        - Si no existe: no habrá sustituir el background-image por un bg-indigo-100 y poner las iniciales visibles.
+                    Debajo muestro el ejemplo con un avatar
+                    -->
+                    <div class="avatar-pequeno bg-[url('/avatars/2.JPG')]">
+
+                        <p class="hidden">AG</p>
+
+                    </div>
+
+                </div>
+
+                } @if (modo === 'admin') {
+
+                <!-- Indicador de pertenencia a la junta directiva -->
+                <div class="etiqueta etiqueta-gris">
+
+                    <span class="w-2.5 h-2.5 2xl:w-3 2xl:h-3 rounded-full bg-green-600"></span>
+
+                    <strong class="texto-responsivo-pequeno text-stone-600">
+                            Junta directiva
+                        </strong>
+
+                </div>
+                }
+
+                <button type="button" (click)="cerrarMenu()" aria-label="Cerrar menú" class="boton-grande-solo-icono boton-blanco-gris">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Acciones de usuario -->
+            <app-user-actions [modo]="modo"></app-user-actions>
+
+        </div>
+
+    </div>
+
+</header>

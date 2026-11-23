@@ -1,0 +1,25 @@
+<!--Imagen de la marca-->
+<div class="marca">
+
+    <!--Logo de la app-->
+    <img src="/logo/logo_ZereginApp.png" alt="Logo ZereginApp">
+
+    <div>
+
+        <!--Texto con el nombre de la app-->
+        <h1>ZereginApp</h1>
+
+        <!--Indicador del modo (Usuario / Administrador) -->
+        @if (modo === 'usuario') {
+
+            <h3>MODO USUARIO</h3>
+
+        } @else if (modo === 'admin') {
+
+            <h3>MODO ADMIN.</h3>
+
+        }
+
+    </div>
+
+</div>

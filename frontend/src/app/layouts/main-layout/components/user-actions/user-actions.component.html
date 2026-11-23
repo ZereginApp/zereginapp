@@ -1,0 +1,39 @@
+<!-- Acciones de usuario -->
+<div class="acciones-usuario">
+
+    @if (modo === 'usuario') {
+    <!-- Acceso al modo administrador (Visible desde el modo usuario. Habrá que decirle por lógica también 
+         que este sólo lo muestre a usuarios logueados con permisis de administrador)
+    -->
+    <a routerLink="/admin/dashboard" class="boton-gris-intenso boton-base-icono">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path fill="none" stroke="currentColor" stroke-width="2" d="M8 11A5 5 0 1 0 8 1a5 5 0 0 0 0 10Zm5.023 2.023C11.772 11.76 10.013 11 8 11c-4 0-7 3-7 7v5h7m2-3.5a2.5 2.5 0 1 0 5.002-.002A2.5 2.5 0 0 0 10 19.5ZM23 15l-3-3l-6 6m3.5-3.5l3 3z" />
+            </svg>
+        <span>Ir a modo administrador</span>
+    </a>
+    } @if (modo === 'admin') {
+    <!-- Acceso al modo usuario (Visible desde el modo usuario)-->
+    <a routerLink="/usuario/inicio" class="boton-gris-intenso boton-base-icono">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path fill="currentColor" d="M12 3.75a3.75 3.75 0 1 0 0 7.5a3.75 3.75 0 0 0 0-7.5m-4 9.5A3.75 3.75 0 0 0 4.25 17v1.188c0 .754.546 1.396 1.29 1.517c4.278.699 8.642.699 12.92 0a1.54 1.54 0 0 0 1.29-1.517V17A3.75 3.75 0 0 0 16 13.25h-.34q-.28.001-.544.086l-.866.283a7.25 7.25 0 0 1-4.5 0l-.866-.283a1.8 1.8 0 0 0-.543-.086z" />
+            </svg>
+
+        <span>Ir a modo usuario</span>
+    </a>
+    }
+
+    <!-- Cierre de sesión -->
+    <!-- La acción de cierre de sesión se implementará posteriormente -->
+    <!-- Habrá que introducir lógica para que se elimine el login previo y, si se había marcado el check de mantener
+         sesión iniciada, se desactive también esa opción -->
+    <button type="button" class="boton-rojo-intenso boton-base-icono">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 2xl:w-8 2xl:h-8 shrink-0" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 12h9m0 0l-3.333-4M22 12l-3.333 4M14 7V5.174a2 2 0 0 0-2.166-1.993l-8 .666A2 2 0 0 0 2 5.84v12.32a2 2 0 0 0 1.834 1.993l8 .667A2 2 0 0 0 14 18.826V17" />
+        </svg>
+        <span>Cerrar sesión</span>
+    </button>
+
+</div>
