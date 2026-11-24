@@ -2,10 +2,11 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('inscripciones', function (Blueprint $table) {
@@ -22,10 +23,13 @@ return new class extends Migration {
             $table->unique(['tarea_id', 'usuario_id']);
             $table->index(['tarea_id', 'estado', 'en_espera_desde']);
         });
-        DB::statement("ALTER TABLE inscripciones ADD CONSTRAINT chk_inscripciones_estado CHECK (estado IN ('confirmada', 'en_espera', 'cancelada'))");
-        DB::statement("ALTER TABLE inscripciones ADD CONSTRAINT chk_inscripciones_origen CHECK (origen IN ('usuario', 'admin'))");
-        DB::statement("ALTER TABLE inscripciones ADD CONSTRAINT chk_inscripciones_espera CHECK ((estado = 'en_espera' AND en_espera_desde IS NOT NULL) OR (estado <> 'en_espera' AND en_espera_desde IS NULL))");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE inscripciones ADD CONSTRAINT chk_inscripciones_estado CHECK (estado IN ('confirmada', 'en_espera', 'cancelada'))");
+            DB::statement("ALTER TABLE inscripciones ADD CONSTRAINT chk_inscripciones_origen CHECK (origen IN ('usuario', 'admin'))");
+            DB::statement("ALTER TABLE inscripciones ADD CONSTRAINT chk_inscripciones_espera CHECK ((estado = 'en_espera' AND en_espera_desde IS NOT NULL) OR (estado <> 'en_espera' AND en_espera_desde IS NULL))");
+        }
     }
+
     public function down(): void
     {
         Schema::dropIfExists('inscripciones');

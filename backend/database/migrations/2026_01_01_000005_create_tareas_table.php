@@ -2,10 +2,11 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('tareas', function (Blueprint $table) {
@@ -33,12 +34,15 @@ return new class extends Migration {
             $table->index(['inicio', 'fin'], 'idx_tareas_inicio_fin');
             $table->index('fin', 'idx_tareas_fin');
         });
-        DB::statement('ALTER TABLE tareas ADD CONSTRAINT chk_tareas_fechas CHECK (fin > inicio)');
-        DB::statement('ALTER TABLE tareas ADD CONSTRAINT chk_tareas_plazas CHECK (plazas_maximas >= plazas_minimas)');
-        DB::statement("ALTER TABLE tareas ADD CONSTRAINT chk_tareas_estado CHECK (estado IN ('borrador', 'publicada', 'cancelada'))");
-        DB::statement('ALTER TABLE tareas ADD CONSTRAINT chk_tareas_limite_inscripcion CHECK (limite_inscripcion <= inicio)');
-        DB::statement('ALTER TABLE tareas ADD CONSTRAINT chk_tareas_limite_cancelacion CHECK (limite_cancelacion <= inicio)');
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement('ALTER TABLE tareas ADD CONSTRAINT chk_tareas_fechas CHECK (fin > inicio)');
+            DB::statement('ALTER TABLE tareas ADD CONSTRAINT chk_tareas_plazas CHECK (plazas_maximas >= plazas_minimas)');
+            DB::statement("ALTER TABLE tareas ADD CONSTRAINT chk_tareas_estado CHECK (estado IN ('borrador', 'publicada', 'cancelada'))");
+            DB::statement('ALTER TABLE tareas ADD CONSTRAINT chk_tareas_limite_inscripcion CHECK (limite_inscripcion <= inicio)');
+            DB::statement('ALTER TABLE tareas ADD CONSTRAINT chk_tareas_limite_cancelacion CHECK (limite_cancelacion <= inicio)');
+        }
     }
+
     public function down(): void
     {
         Schema::dropIfExists('tareas');
