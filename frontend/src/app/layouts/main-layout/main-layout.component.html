@@ -1,0 +1,100 @@
+<!-- =============================== main-layout.component.html =============================== -->
+<!-- Define los elementos comunes, como las barras de navegación, el header para móviles,       -->                
+<!-- una sección con información y el avatar del usuario y otra sección de pie con información  -->
+<!-- de la app                                                                                  -->
+<!-- ========================================================================================== -->
+
+<div class="contenedor-principal">
+
+    <!-- ===================================================== -->
+    <!-- SIDEBAR: NAVEGACIÓN PARA ESCRITORIO                    -->
+    <!-- ===================================================== -->
+    <app-sidebar [modo]="modo"></app-sidebar>
+
+    <!-- ===================================================== -->
+    <!-- HEADER: MÓVILES Y TABLETS                             -->
+    <!-- ===================================================== -->
+    <app-mobile-header [modo]="modo"></app-mobile-header>
+
+    <!-- ===================================================== -->
+    <!-- CONTENIDO PRINCIPAL                                   -->
+    <!-- ===================================================== -->
+
+    <main>
+
+        <div class="flex flex-col flex-1 min-w-0">
+
+            <!-- Información de la cuadrilla y del usuario -->
+            <!-- La fecha y el avatar se cargarán dinámicamente -->
+            <section class="hidden lg:flex items-center justify-between gap-4 2xl:gap-6 mb-5 2xl:mb-8">
+
+                <div class="flex flex-wrap items-center gap-2 2xl:gap-3 min-w-0 texto-pequeno">
+                    <strong class="text-stone-800">
+                        Basatiak • La Blanca 2026
+                    </strong>
+
+                    <span class="text-stone-400">●</span>
+
+                    <!--Elemento dinámico. Tiene lógica para que la fecha se actualice-->
+                    <span class="text-stone-600">
+                        {{ fechaActual | date:'EEEE, d \'de\' MMMM \'de\' yyyy':'':'es' }}
+                    </span>
+
+                </div>
+
+                @if (modo === 'usuario') {
+
+                <!-- Avatar del usuario -->
+                <div class="shrink-0">
+
+                    <!--
+                    LÓGICA ANGULAR:
+                    Con in @If, comprobar si el usuario ha elegido un avatar de la lista.
+                        - Si existe: mostrar el avatar en como un background-image (bg-[url('...')]) y las iniciales estarán como hidden
+                        - Si no existe: no habrá sustituir el background-image por un bg-indigo-100 y poner las iniciales visibles.
+                    Debajo muestro el ejemplo con un avatar
+                    -->
+                    <div class="avatar-pequeno bg-[url('/avatars/2.JPG')]">
+
+                        <p class="hidden">AG</p>
+
+                    </div>
+                </div>
+                } @if (modo === 'admin') {
+
+                <!-- Indicador de pertenencia a la junta directiva -->
+                <div class="etiqueta etiqueta-gris">
+
+                    <span class="w-2.5 h-2.5 2xl:w-3 2xl:h-3 rounded-full bg-green-600"></span>
+
+                    <strong class="texto-responsivo-pequeno text-stone-600">
+                            Junta directiva
+                        </strong>
+
+                </div>
+                }
+
+
+            </section>
+
+            <!-- Componente de la página activa -->
+            <router-outlet></router-outlet>
+        </div>
+
+        <!-- Pie de página -->
+        <section class="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 2xl:gap-3 mt-6 2xl:mt-8 py-3 2xl:py-4 text-center texto-pequeno">
+            <span>ZereginApp Cuadrillas ● Vitoria-Gasteiz</span>
+            <span class="hidden sm:inline">/</span>
+            <span>Versión 1.0 (FP DAW 2026)</span>
+        </section>
+
+    </main>
+
+    <!-- ===================================================== -->
+    <!-- NAVEGACIÓN INFERIOR: MÓVILES Y TABLETS                -->
+    <!-- ===================================================== -->
+
+    <app-mobile-footer [modo]="modo"></app-mobile-footer>
+
+
+</div>

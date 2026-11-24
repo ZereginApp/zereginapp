@@ -1,0 +1,107 @@
+<!-- Navegación principal -->
+<nav class="main-navigation">
+
+
+    @if (modo === 'usuario') {
+    <!-- Navegación del usuario -->
+
+        <!-- Inicio -->
+        <a routerLink="/usuario/inicio" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M3 14L10 14L10 21L3 21L3 14ZM3 3L10 3L10 10L3 10L3 3ZM14 14L21 14L21 21L14 21L14 14ZM14 3L21 3L21 10L14 10L14 3Z" />
+                </svg>
+            <span>Inicio</span>
+        </a>
+
+        <!-- Tareas -->
+        <a routerLink="/usuario/tareas" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="1 0 35 35">
+                    <path d="M0 0h36v36H0z" fill="none" />
+                    <path fill="currentColor" d="M29.29 5H27v2h2v25H7V7h2V5H7a1.75 1.75 0 0 0-2 1.69v25.62A1.7 1.7 0 0 0 6.71 34h22.58A1.7 1.7 0 0 0 31 32.31V6.69A1.7 1.7 0 0 0 29.29 5" />
+                    <path fill="currentColor" d="M26 7.33A2.34 2.34 0 0 0 23.67 5h-1.8a4 4 0 0 0-7.75 0h-1.79A2.34 2.34 0 0 0 10 7.33V11h16ZM24 9H12V7.33a.33.33 0 0 1 .33-.33H16V6a2 2 0 0 1 4 0v1h3.67a.33.33 0 0 1 .33.33Z" />
+                    <path fill="currentColor" d="M11 14h14v2H11z" />
+                    <path fill="currentColor" d="M11 18h14v2H11z" />
+                    <path fill="currentColor" d="M11 22h14v2H11z" />
+                    <path fill="currentColor" d="M11 26h14v2H11z" />
+                    <path fill="none" d="M0 0h36v36H0z" />
+                </svg>
+            <span>Tareas</span>
+        </a>
+
+        <!-- Mis tareas -->
+        <a routerLink="/usuario/mis-tareas" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2">
+                        <path d="m9 10l3.258 2.444a1 1 0 0 0 1.353-.142L20 5" />
+                        <path d="M21 12a9 9 0 1 1-6.67-8.693" />
+                    </g>
+                </svg>
+            <span>Mis Tareas</span>
+        </a>
+
+        <!-- Perfil -->
+        <a routerLink="/usuario/perfil" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <g fill="none">
+                        <path stroke="currentColor" stroke-width="2" d="M21 12a8.96 8.96 0 0 1-1.526 5.016A8.99 8.99 0 0 1 12 21a8.99 8.99 0 0 1-7.474-3.984A9 9 0 1 1 21 12Z" />
+                        <path fill="currentColor" d="M13 9a1 1 0 0 1-1 1v2a3 3 0 0 0 3-3zm-1 1a1 1 0 0 1-1-1H9a3 3 0 0 0 3 3zm-1-1a1 1 0 0 1 1-1V6a3 3 0 0 0-3 3zm1-1a1 1 0 0 1 1 1h2a3 3 0 0 0-3-3zm-6.834 9.856l-.959-.285l-.155.523l.355.413zm13.668 0l.76.651l.354-.413l-.155-.523zM9 16h6v-2H9zm0-2a5 5 0 0 0-4.793 3.571l1.917.57A3 3 0 0 1 9 16zm3 6a7.98 7.98 0 0 1-6.075-2.795l-1.518 1.302A9.98 9.98 0 0 0 12 22zm3-4c1.357 0 2.506.902 2.876 2.142l1.916-.571A5 5 0 0 0 15 14zm3.075 1.205A7.98 7.98 0 0 1 12 20v2a9.98 9.98 0 0 0 7.593-3.493z" />
+                    </g>
+                </svg>
+            <span>Perfil</span>
+        </a>
+    } @else if (modo === 'admin') {
+    <!-- Navegación del administrador -->
+
+        <!-- Dashboard -->
+        <a routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M3 14L10 14L10 21L3 21L3 14ZM3 3L10 3L10 10L3 10L3 3ZM14 14L21 14L21 21L14 21L14 14ZM14 3L21 3L21 10L14 10L14 3Z" />
+                </svg>
+            <span>Dasboard</span>
+        </a>
+
+        <!-- Tareas -->
+        <a routerLink="/admin/tareas-admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="1 0 35 35">
+                    <path d="M0 0h36v36H0z" fill="none" />
+                    <path fill="currentColor" d="M29.29 5H27v2h2v25H7V7h2V5H7a1.75 1.75 0 0 0-2 1.69v25.62A1.7 1.7 0 0 0 6.71 34h22.58A1.7 1.7 0 0 0 31 32.31V6.69A1.7 1.7 0 0 0 29.29 5" />
+                    <path fill="currentColor" d="M26 7.33A2.34 2.34 0 0 0 23.67 5h-1.8a4 4 0 0 0-7.75 0h-1.79A2.34 2.34 0 0 0 10 7.33V11h16ZM24 9H12V7.33a.33.33 0 0 1 .33-.33H16V6a2 2 0 0 1 4 0v1h3.67a.33.33 0 0 1 .33.33Z" />
+                    <path fill="currentColor" d="M11 14h14v2H11z" />
+                    <path fill="currentColor" d="M11 18h14v2H11z" />
+                    <path fill="currentColor" d="M11 22h14v2H11z" />
+                    <path fill="currentColor" d="M11 26h14v2H11z" />
+                    <path fill="none" d="M0 0h36v36H0z" />
+                </svg>
+            <span>Tareas</span>
+        </a>
+
+        <!-- Participantes -->
+        <a routerLink="/admin/participantes" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <g fill="currentColor">
+                        <path fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 1 1 7.5 0a3.75 3.75 0 0 1-7.5 0m7.5 3a3 3 0 1 1 6 0a3 3 0 0 1-6 0m-13.5 0a3 3 0 1 1 6 0a3 3 0 0 1-6 0m4.06 5.368A6.75 6.75 0 0 1 12 12a6.745 6.745 0 0 1 6.709 7.498a.75.75 0 0 1-.372.568A12.7 12.7 0 0 1 12 21.75a12.7 12.7 0 0 1-6.337-1.684a.75.75 0 0 1-.372-.568a6.8 6.8 0 0 1 1.019-4.38" clip-rule="evenodd" />
+                        <path d="m5.082 14.254l-.036.055a8.3 8.3 0 0 0-1.271 5.08a9.7 9.7 0 0 1-1.765-.44l-.115-.04a.56.56 0 0 1-.373-.487l-.01-.121Q1.5 18.15 1.5 18a3.75 3.75 0 0 1 3.582-3.746m15.144 5.135a8.3 8.3 0 0 0-1.308-5.135a3.75 3.75 0 0 1 3.57 4.047l-.01.121a.56.56 0 0 1-.373.486l-.115.04q-.851.302-1.764.441" />
+                    </g>
+                </svg>
+            <span>Participantes</span>
+        </a>
+
+        <!-- Estadísticas -->
+        <a routerLink="/admin/estadisticas" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M0 0h16v16H0z" fill="none" />
+                    <g fill="currentColor">
+                        <path d="M1.5 1a.5.5 0 0 1 .5.5V14h12.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 .5-.5" />
+                        <path d="M5 8a1 1 0 0 1 1 1v4H3V9a1 1 0 0 1 1-1zm4-6a1 1 0 0 1 1 1v10H7V3a1 1 0 0 1 1-1zm4 4a1 1 0 0 1 1 1v6h-3V7a1 1 0 0 1 1-1z" />
+                    </g>
+                </svg>
+            <span>Estadísticas</span>
+        </a>
+    }
+
+</nav>
