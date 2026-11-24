@@ -40,7 +40,7 @@ class CuadrillaDemoSeeder extends Seeder
                 'password' => $passwordDemo,
                 'rol' => 'admin',
                 'anio_ingreso' => 2012,
-                'fecha_baja' => null
+                'fecha_baja' => null,
             ]
         );
         $administradores[] = Usuario::updateOrCreate(
@@ -52,7 +52,7 @@ class CuadrillaDemoSeeder extends Seeder
                 'password' => $passwordDemo,
                 'rol' => 'admin',
                 'anio_ingreso' => 2009,
-                'fecha_baja' => null
+                'fecha_baja' => null,
             ]
         );
 
@@ -102,7 +102,7 @@ class CuadrillaDemoSeeder extends Seeder
                     'password' => $passwordDemo,
                     'rol' => 'miembro',
                     'anio_ingreso' => $anio,
-                    'fecha_baja' => null
+                    'fecha_baja' => null,
                 ]
             );
         }
@@ -134,8 +134,8 @@ class CuadrillaDemoSeeder extends Seeder
 
         $tareas = [];
         foreach ($datosTareas as $indice => [$fecha, $horaInicio, $horaFin, $tipo, $plazas, $categorias, $titulo, $descripcion]) {
-            $inicio = Carbon::parse($fecha . ' ' . $horaInicio);
-            $fin = Carbon::parse($fecha . ' ' . $horaFin);
+            $inicio = Carbon::parse($fecha.' '.$horaInicio);
+            $fin = Carbon::parse($fecha.' '.$horaFin);
             if ($fin->lessThanOrEqualTo($inicio)) {
                 $fin->addDay();
             }
@@ -157,18 +157,17 @@ class CuadrillaDemoSeeder extends Seeder
                     'antiguedad_minima' => $indice % 4 === 0 ? 2 : null,
                     'limite_inscripcion' => $inicio->copy()->subDay(),
                     'limite_cancelacion' => $inicio->copy()->subHours(3),
-                    'admite_lista_espera' => true
+                    'admite_lista_espera' => true,
                 ]
             );
 
             $idsCategorias = array_map(
-                fn(string $nombre) => $nombre === 'Blusa' ? $blusa->id : $neska->id,
+                fn (string $nombre) => $nombre === 'Blusa' ? $blusa->id : $neska->id,
                 $categorias
             );
             $tarea->categoriasPermitidas()->sync($idsCategorias);
             $tareas[] = $tarea;
         }
-
 
         // Vaciar solo las inscripciones de estas 20 tareas demo para que el seeder sea repetible.
         Inscripcion::whereIn('tarea_id', collect($tareas)->pluck('id'))->delete();
@@ -204,7 +203,7 @@ class CuadrillaDemoSeeder extends Seeder
             }
 
             $categoriasPermitidas = $tarea->categoriasPermitidas()->pluck('categorias.id')->all();
-            $candidatos = collect($miembros)->filter(fn(Usuario $miembro) => in_array($miembro->categoria_id, $categoriasPermitidas, true))->values();
+            $candidatos = collect($miembros)->filter(fn (Usuario $miembro) => in_array($miembro->categoria_id, $categoriasPermitidas, true))->values();
             $cantidad = min(3 + ($indice % 2), $candidatos->count(), $tarea->plazas_maximas - 1);
 
             foreach ($candidatos->take($cantidad) as $posicion => $miembro) {

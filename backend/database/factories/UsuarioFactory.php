@@ -28,16 +28,16 @@ class UsuarioFactory extends Factory
     /** Asigna una categoría existente. */
     public function enCategoria(Categoria $categoria): static
     {
-        return $this->state(fn() => ['categoria_id' => $categoria->id]);
+        return $this->state(fn () => ['categoria_id' => $categoria->id]);
     }
 
     public function administrador(): static
     {
-        return $this->state(fn() => ['rol' => 'admin']);
+        return $this->state(fn () => ['rol' => 'admin']);
     }
 
     public function deBaja(): static
     {
-        return $this->state(fn() => ['fecha_baja' => now()]);
+        return $this->state(fn () => ['fecha_baja' => now()]);
     }
 }

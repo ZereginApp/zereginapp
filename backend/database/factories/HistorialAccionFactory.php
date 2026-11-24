@@ -27,6 +27,6 @@ class HistorialAccionFactory extends Factory
 
     public function sobreTarea(Tarea $tarea): static
     {
-        return $this->state(fn() => ['tarea_id' => $tarea->id]);
+        return $this->state(fn () => ['tarea_id' => $tarea->id]);
     }
 }

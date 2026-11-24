@@ -27,21 +27,21 @@ class InscripcionFactory extends Factory
 
     public function para(Tarea $tarea, Usuario $usuario): static
     {
-        return $this->state(fn() => ['tarea_id' => $tarea->id, 'usuario_id' => $usuario->id]);
+        return $this->state(fn () => ['tarea_id' => $tarea->id, 'usuario_id' => $usuario->id]);
     }
 
     public function creadaPorAdmin(Usuario $admin): static
     {
-        return $this->state(fn() => ['origen' => 'admin', 'creada_por_id' => $admin->id]);
+        return $this->state(fn () => ['origen' => 'admin', 'creada_por_id' => $admin->id]);
     }
 
     public function enEspera(): static
     {
-        return $this->state(fn() => ['estado' => 'en_espera', 'en_espera_desde' => now()]);
+        return $this->state(fn () => ['estado' => 'en_espera', 'en_espera_desde' => now()]);
     }
 
     public function cancelada(): static
     {
-        return $this->state(fn() => ['estado' => 'cancelada', 'cancelada_at' => now()]);
+        return $this->state(fn () => ['estado' => 'cancelada', 'cancelada_at' => now()]);
     }
 }

@@ -40,7 +40,7 @@ class TareaFactory extends Factory
     /** Asigna un tipo y un creador existentes. */
     public function con(TipoTarea $tipo, Usuario $creador): static
     {
-        return $this->state(fn() => [
+        return $this->state(fn () => [
             'tipo_tarea_id' => $tipo->id,
             'creador_id' => $creador->id,
         ]);
@@ -50,6 +50,7 @@ class TareaFactory extends Factory
     {
         return $this->state(function () {
             $inicio = now()->addDays(3)->setTime(23, 0);
+
             return [
                 'inicio' => $inicio,
                 'fin' => $inicio->copy()->addHours(2),
