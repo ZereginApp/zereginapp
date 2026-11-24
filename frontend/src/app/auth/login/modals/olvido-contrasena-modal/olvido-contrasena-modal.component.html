@@ -1,0 +1,187 @@
+<!-- ============================ asignar-tarea-modal.component.html =========================== -->
+
+<!--Este componente muestra una ventana modal mediante la cual se muestran los datos de una 
+    persona participante y una lista de tareas disponibles. Podrá seleccionarse una para 
+    asignársela a la persona
+
+     CRITERIOS DE DISEÑO:
+     - Diseño responsive para móviles, tablets y escritorio.
+     - Ventana modal centrada con altura máxima.
+     - Contenido desplazable verticalmente cuando sea necesario.
+     - Información del participante y la tarea organizada en tarjetas.
+     - Botones adaptados a los distintos tamaños de pantalla.                                    -->
+<!-- =========================================================================================== -->
+
+
+<!-- ================================================
+     FONDO Y VENTANA MODAL
+================================================ -->
+
+<!-- Fondo oscuro que ocupa toda la pantalla y centra la ventana modal -->
+<div class="fondo-modal">
+
+    <!-- Ventana modal -->
+    <div class="tarjeta-modal">
+
+        <!-- ================================================
+             CABECERA DEL MODAL
+        ================================================ -->
+
+        <section class="cabecera-modal">
+
+            <!-- Icono de añadir participante -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icono-azul-con-fondo" viewBox="0 0 48 48">
+                <path d="M0 0h48v48H0z" fill="none" />
+                <path fill="currentColor" d="M10.25 7A6.25 6.25 0 0 0 4 13.25v15.5A6.25 6.25 0 0 0 10.25 35h16.154l-3.452-3.452a3.25 3.25 0 0 1 0-4.596l3.116-3.116L25 22.768l-1.866 1.866a1.25 1.25 0 0 1-1.768-1.768L23.232 21l-1.866-1.866a1.25 1.25 0 0 1 1.768-1.768L25 19.232l1.866-1.866a1.25 1.25 0 0 1 1.768 1.768L26.768 21l1.244 1.244a3.25 3.25 0 0 1 4.005 1.3A1.25 1.25 0 0 1 33.25 22.5h4.5a1.25 1.25 0 1 1 0 2.5h-4.5c-.301 0-.578-.107-.794-.285c.07.426.056.864-.043 1.285H37c2.66 0 5.098.944 7 2.514V13.25A6.25 6.25 0 0 0 37.75 7zm.116 10.366a1.25 1.25 0 0 1 1.768 0L14 19.232l1.866-1.866a1.25 1.25 0 0 1 1.768 1.768L15.768 21l1.866 1.866a1.25 1.25 0 0 1-1.768 1.768L14 22.768l-1.866 1.866a1.25 1.25 0 0 1-1.768-1.768L12.232 21l-1.866-1.866a1.25 1.25 0 0 1 0-1.768m19.768 8.768a1.25 1.25 0 0 0-1.768-1.768l-4 4a1.25 1.25 0 0 0 0 1.768l4 4a1.25 1.25 0 0 0 1.768-1.768L28.268 30.5H37a6.5 6.5 0 1 1-6.415 7.553a1.25 1.25 0 1 0-2.468.402C28.813 42.734 32.524 46 37 46a9 9 0 0 0 0-18h-8.732z" />
+            </svg>
+
+            <div class="flex flex-col min-w-0">
+                <strong class="titulo-responsivo-grande">
+                    ¿Has olvidado tu contraseña?
+                </strong>
+
+                <span class="text-gris-fuerte texto-responsivo-pequeno leading-relaxed">
+                    No te preocupes, un administrador puede recuperarla
+                </span>
+            </div>
+
+        </section>
+
+        <p class="text-gris-fuerte texto-responsivo-base leading-relaxed">
+            Introduce tu e-mail y, la próxima vez que un administrador acceda a la aplicación, le aparecerá tu solicitud
+        </p>
+
+
+        <!-- ================================================
+             FORMULARIO DE SOLICITUD
+        ================================================ -->
+
+        <form (submit)="solicitarRestablecimiento($event)">
+
+            <div class="campo-escrito-label">
+
+                <!-- Correo electrónico -->
+                <label for="email" >
+                    Correo electrónico
+                </label>
+
+                <div class="campo-escrito w-full">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <rect x="3" y="5" width="18" height="14" rx="2"/>
+                        <path d="m3 7 9 6 9-6"/>
+                    </svg>
+
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        autocomplete="username"
+                        required
+                        placeholder="ejemplo@correo.com"
+                    >
+                </div>
+            </div>
+
+            <!-- LÓGICA ANGULAR: Botón de solicitud de restablecimiento
+                 Comprueba que se ha introducido un e-mail y que este existe en la base de datos
+                 - Si no existe, mostrará un mensaje de error
+                 - Si existe, cambiará el estado de la cuenta de la persona participante
+                   a "Restablecer contraseña", tal y como se muestra en la tabla en el componente 
+                   Participantes del Modo Admin. 
+                   En este caso mostrará también un mensaje de éxito y otro de aviso
+                   -->
+            <button
+                type="submit"
+                class="boton-base-sin-icono boton-azul-intenso font-bold"
+            >
+                Solicitar restablecimiento de contraseña
+            </button>
+
+        </form>
+
+        <!-- ================================================
+             RESULTADO DE LA SOLICITUD
+        ================================================ -->
+
+        <!--
+            LÓGICA ANGULAR:
+            Esta sección solo se mostrará cuando se haya generado
+            una solicitud pulsando el botón.
+
+            La variable mostrarResultado controla su visibilidad.
+        -->
+
+        <div *ngIf="mostrarResultado" class="contenedor-mensajes-con-borde aviso-azul-claro">
+
+            <!-- LÓGICA ANGULAR: Mensaje de error: Muestra el mensaje si la dirección de correo no existe -->
+            <div class="aviso-con-borde aviso-rojo hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    class="icono-pequeno" 
+                    viewBox="0 0 16 16"
+                >
+                    <path d="M0 0h16v16H0z" fill="none" />
+                    <path fill="currentColor" fill-rule="evenodd" d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1m3.707 3.293a1 1 0 0 0-1.414 0L8 6.586L5.707 4.293a1 1 0 1 0-1.414 1.414L6.586 8l-2.293 2.293a1 1 0 1 0 1.414 1.414L8 9.414l2.293 2.293a1 1 0 1 0 1.414-1.414L9.414 8l2.293-2.293a1 1 0 0 0 0-1.414" clip-rule="evenodd" />
+                </svg>
+                <span>La dirección de correo electrónico introducida no existe</span>
+            </div>
+
+            <!-- LÓGICA ANGULAR: Mensaje de éxito. Muestra el mensaje si la dirección de correo existe y se ha cambiado el estado de la cuenta a "Restablecer contraseña" -->
+            <div class="aviso-con-borde aviso-verde ">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    class="icono-pequeno" 
+                    viewBox="0 0 48 48">
+                    <path d="M0 0h48v48H0z" fill="none" />
+                    <defs>
+                        <mask id="SVGKkdZ2csA">
+                            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="4">
+                                <path fill="#fff" stroke="#fff" d="m24 4l5.253 3.832l6.503-.012l1.997 6.188l5.268 3.812L41 24l2.021 6.18l-5.268 3.812l-1.997 6.188l-6.503-.012L24 44l-5.253-3.832l-6.503.012l-1.997-6.188l-5.268-3.812L7 24l-2.021-6.18l5.268-3.812l1.997-6.188l6.503.012z" />
+                                <path stroke="#000" d="m17 24l5 5l10-10" />
+                            </g>
+                        </mask>
+                    </defs>
+                    <path fill="currentColor" d="M0 0h48v48H0z" mask="url(#SVGKkdZ2csA)" />
+                </svg>
+
+                <span>¡Solicitud de restablecimiento enviada con éxito!</span>
+            </div>
+
+
+            <!-- Aviso sobre la solicitud de restablecimiento. Muestra el mensaje si la dirección de correo existe y se ha cambiado el estado de la cuenta a "Restablecer contraseña" -->
+            <div class="aviso-sin-borde aviso-gris ">
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icono-base" viewBox="0 0 1024 1024">
+                    <path d="M0 0h1024v1024H0z" fill="none" />
+                    <path fill="currentColor" d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448s448-200.6 448-448S759.4 64 512 64m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372s372 166.6 372 372s-166.6 372-372 372" />
+                    <path fill="currentColor" d="M464 688a48 48 0 1 0 96 0a48 48 0 1 0-96 0m24-112h48c4.4 0 8-3.6 8-8V296c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8" />
+                </svg>
+
+                <span class="leading-relaxed">
+                    Un administrador generará una contraseña temporal y te la hará llegar. <br>
+                    Si no te llega ninguna, ponte en contacto con alguno de los administradores.
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- ================================================
+             CERRAR MODAL
+        ================================================ -->
+
+        <button
+            type="button"
+            (click)="cerrarOlvidoContrasena.emit()"
+            class="boton-base-sin-icono boton-rojo-intenso w-fit self-center font-bold"
+        >
+            Cerrar
+        </button>
+    </div>
+</div>
